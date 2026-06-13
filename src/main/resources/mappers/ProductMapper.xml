@@ -26,4 +26,11 @@
         	id = #{id}
     </select>
 
+
+    <update id="updateStock" parameterType="com.pup.taguig.model.Product">
+        UPDATE product
+        SET stock = #{stock}
+        WHERE id = #{id}
+    </update>
+
 </mapper>
