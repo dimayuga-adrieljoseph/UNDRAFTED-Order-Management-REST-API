@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pup.taguig.repository.ReportMapper">
+
+    <select id="getTotalSales" resultType="com.pup.taguig.dto.SalesReportDTO">
+        SELECT 
+            COUNT(*) AS totalOrders, 
+            COALESCE(SUM(total_price), 0) AS totalRevenue 
+        FROM orders
+    </select>
+
+    <select id="getTopSellingProducts" resultType="com.pup.taguig.dto.TopProductDTO">
+        SELECT 
+            p.id AS productId, 
+            p.name AS productName, 
+            SUM(oi.quantity) AS totalQuantitySold
+        FROM order_item oi
+        JOIN product p ON oi.product_id = p.id
+        GROUP BY p.id, p.name
+        ORDER BY totalQuantitySold DESC
+        LIMIT #{limit}
+    </select>
+
+</mapper>
